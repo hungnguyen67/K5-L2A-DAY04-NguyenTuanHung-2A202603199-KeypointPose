@@ -12,7 +12,7 @@ Dữ liệu: 12 ảnh người và 8 ảnh mặt được chọn từ bộ ảnh
 - Phiên bản CVAT (API `http://localhost:8080/api/server/about`): 2.74.1
 - Máy: Windows · RAM vật lý: 15.7 GB · CVAT: đầy đủ (các dịch vụ tùy chọn đều đang chạy)
 - Bộ ảnh (`src/exports/assignment.json`): Có; pool `d04-k5-v2`; 12 ảnh người, 8 ảnh mặt và có bộ bonus
-- Giờ bắt đầu: 16:00, 12/11/2026 (GMT+7)
+- Giờ bắt đầu: 17:00, 12/11/2026 (GMT+7)
 - Giờ kết thúc: 19:30, 12/11/2026 (GMT+7)
 
 ## 1. Kiểm tra label (CP0)
@@ -43,6 +43,8 @@ ZIP export hiện tại có 17 skeleton người; `000000189365.jpg` có 2 skele
 
 - Số ảnh người đã xong ở mốc phút 105: Ước tính 8 / 10
 - Thời gian CP (ước tính theo lịch lab, không phải log): CP1 90 phút · CP2 30 phút · CP3 20 phút
+- Thời gian theo nhịp từng nhóm cộng lại là 84 phút cho CP1 (chưa phân bổ 6 phút so với ước tính CP1 90 phút); CP2 30 phút, CP3 20 phút. Đây là ước tính, không phải log thời gian thực.
+- Tổng thời gian CP đã ước tính là 140 phút trong khoảng 150 phút; 10 phút còn lại chưa có dữ liệu phân bổ.
 - Ảnh tốn thời gian nhất: `000000123544.jpg`, người bên trái. Lý do mô tả theo ảnh: người nằm sát mép trái khung hình và ở tư thế chạy nghiêng, nên việc xác định vị trí các khớp tay/chân và trái/phải khó hơn.
 
 Rà ảnh `small` (640 × 428 px): có 2 bóng người rõ ràng dưới 60 px; một vùng mờ cạnh đồng hồ chưa đủ rõ để tính thêm. Người ngoài cùng bên phải cũng mờ/nhỏ; ngưỡng 60 px chưa xác định được nên chưa thể kết luận có thiếu skeleton. Số poster/gương/màn hình là 0 theo ảnh được rà. Thời gian nhóm ước tính theo nhịp trong `CHECKPOINTS.md` (easy 5, occluded 7, back 8, small 8, crowd 14 phút/ảnh; faces 30 phút tổng), không phải thời gian thực tế đo được.
@@ -54,7 +56,7 @@ Mỗi điểm bạn phân vân một dòng, nhất là phân vân giữa `v = 1`
 | Ảnh                | Người / mặt | Điểm            |       Cờ đã chọn | Phân vân giữa                                                                                                | Lý do chọn       |
 | ------------------ | ----------- | --------------- | ---------------: | ------------------------------------------------------------------------------------------------------------ | ---------------- |
 | `000000292999.jpg` | person #1   | Vai trái (`left_shoulder`) | `v = 1` | Phân vân giữa `v = 1` (bị che khuất nhưng ước lượng được) và `v = 0` (không xác định được vị trí). | Vai trái bị che một phần nhưng vị trí ước lượng được từ tư thế và liên kết skeleton; điểm nằm trong ảnh nên chọn `v = 1`, không phải `v = 0`. |
-| `000000332273.jpg` | person #3   | ankle trái/phải | `v = 2` cả hai | Cặp `left_ankle` / `right_ankle` có bị gán ngược trái/phải không? Không phân vân về visibility. | Cả hai cổ chân nhìn thấy; checker chỉ cảnh báo heuristic về trái/phải. Chưa đổi nhãn nếu chưa lần theo từng chân từ hông → gối → cổ chân để xác nhận. |
+| `000000332273.jpg` | person #3   | ankle trái/phải | `v = 2` cả hai | Cặp `left_ankle` / `right_ankle` có bị gán ngược trái/phải không? Không phân vân về visibility. | Bạn đã xác nhận cặp cổ chân của person #3 đúng. Cảnh báo hiện tại của checker là person #2 trong cùng ảnh, cần review riêng. |
 | `000000054909.jpg` | person #2   | Vai phải (`right_shoulder`) | `v = 1` | Phân vân giữa `v = 1` (bị che nhưng ước lượng được) và `v = 0` (không xác định được vị trí). | Vai bị ô che khuất một phần nhưng vị trí ước lượng được theo thân người; điểm nằm trong ảnh nên chọn `v = 1`. |
 
 ## 4. Bảng tự review (CP3)
@@ -67,7 +69,8 @@ Mã lỗi dùng đúng một trong: `lr_swap`, `vis_flag`, `position`, `missing`
 
 | Ảnh                | Người / mặt | Điểm          | Mã lỗi     | Ghi chú                                                                                                       | Tình trạng sửa trên CVAT |
 | ------------------ | ----------- | ------------- | ---------- | ------------------------------------------------------------------------------------------------------------- | ------------------------ |
-| `000000332273.jpg` | person #3   | Cặp mắt cá    | `ok`       | Bạn xác nhận cặp cổ chân trái/phải đã gán đúng; cảnh báo checker do tư thế một chân trụ/một chân co, không cần đổi nhãn. | Đã xác nhận đúng; không cần sửa |
+| `000000332273.jpg` | person #3   | Cặp mắt cá    | `ok`       | Bạn xác nhận cặp cổ chân trái/phải của person #3 đã gán đúng. Cảnh báo checker trong ảnh này là ở person #2. | Đã xác nhận đúng; không cần sửa |
+| `000000332273.jpg` | person #2   | Cặp mắt cá    | `lr_swap`  | Checker cảnh báo cặp ankle có thể bị đảo trái/phải hoặc do chân bắt chéo; đây là người khác với person #3. | Chưa sửa |
 | `000000123544.jpg` | person nền  | —             | `ok`       | Người nền nhỏ dưới ngưỡng 60 px; theo quy tắc lab không cần gán skeleton.                                     | Không cần sửa            |
 | `000000189365.jpg` | person nền  | Toàn skeleton | `missing`  | Trước khi sửa, người mặc áo đỏ phía sau vận động viên chưa có skeleton.                                        | Đã sửa: thêm 1 skeleton |
 | `000000090646.jpg` | person #1   | —             | `ok`       | Người thật đã gán; mannequin không bị gán nhầm. Không thấy lệch vị trí lớn trong ảnh chụp.                    | Không cần sửa            |
@@ -80,7 +83,7 @@ Tổng hợp số lỗi theo mã:
 
 | `lr_swap` | `vis_flag` | `position` | `missing` | `extra` | `ok` |
 | --------: | ---------: | ---------: | --------: | ------: | ---: |
-|         0 |          0 |          2 |         1 |       0 |    5 |
+|         1 |          0 |          2 |         1 |       0 |    5 |
 
 Điểm còn phân vân giữa `v = 1` và `v = 0` (ghi cả hai lựa chọn và lý do chọn):
 
