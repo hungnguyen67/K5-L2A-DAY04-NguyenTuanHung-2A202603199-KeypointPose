@@ -1,0 +1,65 @@
+{
+ "mssv": "2A202603199",
+ "ten": "NguyenTuanHung",
+ "pool_version": "d04-k5-v2",
+ "cvat_user": "HungNguyen",
+ "project": "d04-keypoint",
+ "persons": [
+  "000000027565.jpg",
+  "000000292999.jpg",
+  "000000336477.jpg",
+  "000000429594.jpg",
+  "000000493741.jpg",
+  "000000090646.jpg",
+  "000000189365.jpg",
+  "000000360811.jpg",
+  "000000054909.jpg",
+  "000000123544.jpg",
+  "000000323705.jpg",
+  "000000332273.jpg"
+ ],
+ "faces": [
+  "face_145751.jpg",
+  "face_155465.jpg",
+  "face_300399.jpg",
+  "face_185015.jpg",
+  "face_264124.jpg",
+  "face_178208.jpg",
+  "face_309728.jpg",
+  "face_333134.jpg"
+ ],
+ "tasks": {
+  "persons": {
+   "task_id": 19,
+   "job_id": 19,
+   "task_name": "persons-NguyenTuanHung"
+  },
+  "faces": {
+   "task_id": 20,
+   "job_id": 20,
+   "task_name": "faces-NguyenTuanHung"
+  },
+  "persons-extra": {
+   "task_id": 21,
+   "job_id": 21,
+   "task_name": "persons-extra-NguyenTuanHung"
+  },
+  "faces-extra": {
+   "task_id": 22,
+   "job_id": 22,
+   "task_name": "faces-extra-NguyenTuanHung"
+  }
+ },
+ "persons_extra": [
+  "000000104800.jpg",
+  "000000373426.jpg",
+  "000000565600.jpg"
+ ],
+ "faces_extra": [
+  "face_280788.jpg",
+  "face_344941.jpg",
+  "face_45276.jpg",
+  "face_494518.jpg",
+  "face_507166.jpg"
+ ]
+}
